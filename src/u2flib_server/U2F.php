@@ -87,6 +87,11 @@ const ERR_BAD_USER_PRESENCE = 14;
 /** @internal */
 const PUBKEY_LEN = 65;
 
+require_once __DIR__ . '/SignRequest.php';
+require_once __DIR__ . '/Error.php';
+require_once __DIR__ . '/RegisterRequest.php';
+require_once __DIR__ . '/Registration.php';
+
 class U2F
 {
     /** @var string  */
@@ -349,8 +354,8 @@ class U2F
         $signature = substr($signData, 5);
 
         if(openssl_verify($dataToVerify, $signature, $pemKey, 'sha256') === 1) {
-            $upb = unpack("Cupb", substr($signData, 0, 1)); 
-            if($upb['upb'] !== 1) { 
+            $upb = unpack("Cupb", substr($signData, 0, 1));
+            if($upb['upb'] !== 1) {
                 throw new Error('User presence byte value is invalid', ERR_BAD_USER_PRESENCE );
             }
             $ctr = unpack("Nctr", substr($signData, 1, 4));
@@ -410,6 +415,19 @@ class U2F
     }
 
     /**
+     * retrieves the challenge from a raw response
+     * @param object $response A response from the authenticator
+     * @return mixed the decoded client data
+     */
+    public function retrieveRawChallengeFromResponse($response)
+    {
+        $clientData = $this->base64u_decode($response->clientData);
+        $cli = json_decode($clientData);
+
+        return $cli->challenge;
+    }
+
+    /**
      * @param string $data
      * @return string
      */
@@ -459,10 +477,13 @@ class U2F
     }
 
     /**
-     * @return string
-     * @throws Error
+     * called to create a challenge. For testing purposes, the U2F class can be inherited,
+     * and this method overridden to always return the same challenge
+     *
+     * @return string the challenge
+     * @throws Error if randomness is not good enough
      */
-    private function createChallenge()
+    protected function createChallenge()
     {
         $challenge = random_bytes(32);
         $challenge = $this->base64u_encode( $challenge );
@@ -482,91 +503,5 @@ class U2F
             $cert[strlen($cert) - 257] = "\0";
         }
         return $cert;
-    }
-}
-
-/**
- * Class for building a registration request
- *
- * @package u2flib_server
- */
-class RegisterRequest
-{
-    /** @var string Protocol version */
-    public $version = U2F_VERSION;
-
-    /** @var string Registration challenge */
-    public $challenge;
-
-    /** @var string Application id */
-    public $appId;
-
-    /**
-     * @param string $challenge
-     * @param string $appId
-     * @internal
-     */
-    public function __construct($challenge, $appId)
-    {
-        $this->challenge = $challenge;
-        $this->appId = $appId;
-    }
-}
-
-/**
- * Class for building up an authentication request
- *
- * @package u2flib_server
- */
-class SignRequest
-{
-    /** @var string Protocol version */
-    public $version = U2F_VERSION;
-
-    /** @var string Authentication challenge */
-    public $challenge = '';
-
-    /** @var string Key handle of a registered authenticator */
-    public $keyHandle = '';
-
-    /** @var string Application id */
-    public $appId = '';
-}
-
-/**
- * Class returned for successful registrations
- *
- * @package u2flib_server
- */
-class Registration
-{
-    /** @var string The key handle of the registered authenticator */
-    public $keyHandle = '';
-
-    /** @var string The public key of the registered authenticator */
-    public $publicKey = '';
-
-    /** @var string The attestation certificate of the registered authenticator */
-    public $certificate = '';
-
-    /** @var int The counter associated with this registration */
-    public $counter = -1;
-}
-
-/**
- * Error class, returned on errors
- *
- * @package u2flib_server
- */
-class Error extends \Exception
-{
-    /**
-     * Override constructor and make message and code mandatory
-     * @param string $message
-     * @param int $code
-     * @param \Exception|null $previous
-     */
-    public function __construct($message, $code, \Exception $previous = null) {
-        parent::__construct($message, $code, $previous);
     }
 }
