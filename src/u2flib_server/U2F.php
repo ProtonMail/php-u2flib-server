@@ -87,11 +87,6 @@ const ERR_BAD_USER_PRESENCE = 14;
 /** @internal */
 const PUBKEY_LEN = 65;
 
-require_once __DIR__ . '/SignRequest.php';
-require_once __DIR__ . '/Error.php';
-require_once __DIR__ . '/RegisterRequest.php';
-require_once __DIR__ . '/Registration.php';
-
 class U2F
 {
     /** @var string  */
@@ -276,7 +271,7 @@ class U2F
     }
 
     /**
-     * Called to verify an authentication response
+     * Called to verify an authentication response.
      *
      * @param array $requests An array of outstanding authentication requests
      * @param array $registrations An array of current registrations
@@ -415,11 +410,11 @@ class U2F
     }
 
     /**
-     * retrieves the challenge from a raw response
+     * Retrieves the challenge from a raw response.
      * @param object $response A response from the authenticator
      * @return mixed the decoded client data
      */
-    public function retrieveRawChallengeFromResponse($response)
+    public function extractChallenge($response)
     {
         $clientData = $this->base64u_decode($response->clientData);
         $cli = json_decode($clientData);
@@ -478,10 +473,10 @@ class U2F
 
     /**
      * called to create a challenge. For testing purposes, the U2F class can be inherited,
-     * and this method overridden to always return the same challenge
+     * and this method overridden to always return the same challenge.
      *
      * @return string the challenge
-     * @throws Error if randomness is not good enough
+     * @throws Error if openssl doesn't have cryptographically strong source
      */
     protected function createChallenge()
     {
