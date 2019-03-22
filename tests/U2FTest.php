@@ -30,7 +30,7 @@
 
 require_once __DIR__ . '/../vendor/autoload.php';
 
-class U2FTest extends \PHPUnit_Framework_TestCase {
+class U2FTest extends PHPUnit\Framework\TestCase {
   /** @var u2flib_server\U2F */
   private $u2f;
 
