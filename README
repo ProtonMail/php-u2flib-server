@@ -1,9 +1,9 @@
 php-u2flib-server
 -----------------
 
-image:https://travis-ci.org/Yubico/php-u2flib-server.svg?branch=master["Build Status", link="https://travis-ci.org/Yubico/php-u2flib-server"]
-image:https://coveralls.io/repos/Yubico/php-u2flib-server/badge.svg?branch=master&service=github["Coverage", link="https://coveralls.io/github/Yubico/php-u2flib-server?branch=master"]
-image:https://scrutinizer-ci.com/g/Yubico/php-u2flib-server/badges/quality-score.png?b=master["Scrutinizer Code Quality", link="https://scrutinizer-ci.com/g/Yubico/php-u2flib-server/?branch=master"]
+image:https://travis-ci.com/ProtonMail/php-u2flib-server.svg?branch=master["Build Status", link="https://travis-ci.com/ProtonMail/php-u2flib-server"]
+image:https://codecov.io/gh/ProtonMail/php-u2flib-server/branch/master/graph/badge.svg["codecov", link="https://codecov.io/gh/ProtonMail/php-u2flib-server"]
+image:https://scrutinizer-ci.com/g/Yubico/php-u2flib-server/badges/quality-score.png?b=master["Scrutinizer Code Quality", link="https://scrutinizer-ci.com/g/ProtonMail/php-u2flib-server/?branch=master"]
 
 === Introduction ===
 

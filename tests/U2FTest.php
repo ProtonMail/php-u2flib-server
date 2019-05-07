@@ -34,7 +34,7 @@ class U2FTest extends PHPUnit\Framework\TestCase {
   /** @var u2flib_server\U2F */
   private $u2f;
 
-  public function setUp() {
+  public function setUp(): void {
     $this->u2f = new u2flib_server\U2F("http://demo.example.com");
   }
 
