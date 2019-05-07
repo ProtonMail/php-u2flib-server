@@ -40,7 +40,7 @@ class U2FTest extends PHPUnit\Framework\TestCase {
 
   public function testGetRegisterData() {
     list($reg, $signData) = $this->u2f->getRegisterData();
-    $this->assertJsonStringEqualsJsonString(json_encode(array()), json_encode($signData));
+    $this->assertJsonStringEqualsJsonString(json_encode([]), json_encode($signData));
     $this->assertEquals('U2F_V2', $reg->version);
     $this->assertObjectHasAttribute('challenge', $reg);
     $this->assertEquals('http://demo.example.com', $reg->appId);

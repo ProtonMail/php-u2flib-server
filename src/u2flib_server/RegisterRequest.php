@@ -7,18 +7,24 @@ namespace u2flib_server;
  */
 class RegisterRequest
 {
-    /** @var string Protocol version */
+    /**
+     * @var string Protocol version
+     */
     public $version = U2F_VERSION;
 
-    /** @var string Registration challenge */
+    /**
+     * @var string Registration challenge
+     */
     public $challenge;
 
-    /** @var string Application id */
+    /**
+     * @var string Application id
+     */
     public $appId;
 
     /**
-     * @param string $challenge
-     * @param string $appId
+     * @param    string $challenge
+     * @param    string $appId
      * @internal
      */
     public function __construct($challenge, $appId)
